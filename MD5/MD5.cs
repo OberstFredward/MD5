@@ -42,11 +42,8 @@ namespace MD5
 
         static public string hash(string message) //Implementierung mit einem BitArray
         {
-            ArrayList bloecke512 = Preparation(message);
-            for (int i = 0; i < bloecke512.Count; i++)
-            {
-     
-            }
+            BitArray[][] test = Preparation(message);
+
             return "";
         }
 
@@ -71,7 +68,7 @@ namespace MD5
             return Y ^ (X | ~Z);
         }
 
-        private static ArrayList Preparation(string message)
+        private static BitArray[][] Preparation(string message) //Gibt die 512Blöcke zurück in schon bereits unterteilten 16*32Bit Blöcke
         {
             //--------Message Reverse-------------------------
             char[] CompleteMessageCharArray = message.ToCharArray();
@@ -127,29 +124,35 @@ namespace MD5
                 }
             }
             else return null;
-            //-------In einzelne 512 Blöcke teilen---------
-            ArrayList bloecke512 = new ArrayList();
-            BitArray[] blo
-            if (completeBits.Length%512 == 0)
+            //--------Alles in 32Bit Blöcke teilen-------
+            if (completeBits.Length % 512 == 0)
             {
-                NumberOf512s = completeBits.Length/512;
+                int NumberOf32s = completeBits.Length / 32;
+                BitArray[] bloecke32 = new BitArray[NumberOf32s];
+                for (int i = 0; i < NumberOf32s; i++)
+                {
+                    BitArray block32 = new BitArray(32);
+                    for (int k = 0; k < 32; k++)
+                    {
+                        block32[k] = completeBits[k + i * 32];
+                    }
+                    bloecke32[i] = block32;
+                }
+                //-------Alles in einzelne 512 Blöcke teilen & die 32Bit Blöcke einfügen---------
+                NumberOf512s = completeBits.Length / 512;
+                BitArray[][] bloecke512 = new BitArray[NumberOf512s][];
                 for (int i = 0; i < NumberOf512s; i++)
                 {
-                    BitArray block512 = new BitArray(512);
-                    for (int k = 0; k < 512; k++)
+                    BitArray[] block512 = new BitArray[16];
+                    for (int k = 0; k < 16; k++)
                     {
-                        block512[k] = completeBits[k+(i*512)];
+                        block512[k] = bloecke32[k + i*16];
                     }
-                    bloecke512.Add(block512);
+                    bloecke512[i] = block512;
                 }
+                return bloecke512;
             }
             else return null;
-            //--------Jeden 512 Block in 16 32Blöcke teilen-------
-            for (int i = 0; i < bloecke512.Count; i++) //Anzahl der 512blöcke
-            {
-                //TODO: HIER WEITERMACHEN
-            }
-            return bloecke512;
         }
     }
 }

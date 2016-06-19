@@ -15,7 +15,7 @@ namespace MD5
         private static byte counter;
         static void Main(string[] args)
         {
-            MD5.hash("hallo mein Freund, ich heiße deine Mama. Ich hoffe diese Nachricht ist endlich mal ein bisschen länger als nur 512 Bits.........:)");
+            MD5.hash("ab");
 
 
             char choice_ed = ' ', choice_tf = ' ';
