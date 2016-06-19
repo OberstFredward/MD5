@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="8d2fc5e5-ec38-4372-8de5-33056fd9c252" name="KlassenDiagramm" linkedPackageId="13bae75b-643a-4449-ae79-0242793034d8" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="74559862-03fb-44e2-804e-d6bfd72f5e3f">
+      <profileInstance Id="fc7207ea-4c0c-462c-a1cc-117afa50a6b6" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="eab82e49-9b7f-49ac-ab26-9dd007d820c1">
+      <profileInstance Id="58d03b24-9a29-42d1-935d-38816ec5d3c5" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="1aa1b4ef-29ac-40eb-a853-0ec2d5ca1023" name="MD5" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="59efee26-03e9-4c13-af65-765b4f3fbd7b" />
+        <ownedOperationsInternal>
+          <operation Id="31446011-3ee5-4a8e-95d1-2413edf1a8e2" name="Encrypt" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8df441b2-f2aa-42f9-98d6-407419cc5bac" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="192019ff-ae50-4ed1-bd30-b21129a695ba" direction="Return">
+                  <elementDefinition Id="142e6daa-43be-4102-923b-eddfd569ef1f" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="a88c0030-5f12-46af-92f1-cd92b4c9cfac" LastKnownName="byte[]" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="8a410864-5088-4b2a-84c9-58eb7ab24cdc" name="input" direction="In" isUnique="false">
+                  <elementDefinition Id="1676350e-873e-4ed2-a4b1-0a404d736040" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="a88c0030-5f12-46af-92f1-cd92b4c9cfac" LastKnownName="byte[]" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="56e88c94-b846-4499-b1e4-d6b02c43a9bc" name="key" direction="In" isUnique="false">
+                  <elementDefinition Id="6d2fe1ba-4ff8-41fc-bfcb-a08678d7e309" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="86a8b29e-cb2f-4e51-ae4b-a592e0021787" LastKnownName="string" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="e73f1a9f-3d78-482e-8153-619615edb5f0" name="Decrypt" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ec82e6bb-46fb-4e09-9863-5ce9c6a75b5a" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="93478d9b-ff79-415e-958a-93de51c15e10" direction="Return">
+                  <elementDefinition Id="8588d20a-2049-4f34-bbcf-aecb9a7722b9" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="9da147fe-c032-431e-b738-9aeed7a4bddd" LastKnownName="byte[]" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="bb32e35c-a6a1-4e24-9f02-cde6335e575e" name="input" direction="In">
+                  <elementDefinition Id="48e9a2bf-d7e1-49ec-8344-be55278e2e2f" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="a88c0030-5f12-46af-92f1-cd92b4c9cfac" LastKnownName="byte[]" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="f9878169-28f7-4593-a571-ed86a522be6d" name="key" direction="In">
+                  <elementDefinition Id="c3463291-0836-4ced-b8ac-8e854c428d36" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="86a8b29e-cb2f-4e51-ae4b-a592e0021787" LastKnownName="string" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="9d5768ec-bb27-49e7-a335-281b4f77410c" name="MD5" visibility="Private" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="a3790aca-100b-47df-829a-5a78099c763a" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="a88c0030-5f12-46af-92f1-cd92b4c9cfac" name="byte[]" isAbstract="false" isLeaf="false" cachedFullName="byte[]">
+        <elementDefinition Id="01c8f5fb-958c-4d61-a27f-b4d9201a0a85" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="9da147fe-c032-431e-b738-9aeed7a4bddd" name="byte[]" isAbstract="false" isLeaf="false" cachedFullName="byte[]">
+        <elementDefinition Id="01c8f5fb-958c-4d61-a27f-b4d9201a0a85" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="86a8b29e-cb2f-4e51-ae4b-a592e0021787" name="string" isAbstract="false" isLeaf="false" cachedFullName="string">
+        <elementDefinition Id="a8a068d5-148d-4d5d-afbf-9aef1255e210" />
+      </referencedType>
+    </packageHasNamedElement>
+  </packagedElements>
+  <package Id="13bae75b-643a-4449-ae79-0242793034d8" name="KlassenDiagramm">
+    <elementDefinition Id="d08b6f13-4e75-4428-bf00-2b543c8a29b8" />
+  </package>
+</logicalClassDesignerModel>
