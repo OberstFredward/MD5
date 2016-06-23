@@ -9,15 +9,13 @@ using System.Threading.Tasks;
 
 namespace MD5
 {
+    
     class Program
     {
         static bool finished = false,syntax;
         private static byte counter;
         static void Main(string[] args)
         {
-            MD5.hash("ab");
-
-
             char choice_ed = ' ', choice_tf = ' ';
             counter = 0;
             do
@@ -66,10 +64,12 @@ namespace MD5
                         switch (choice_tf)
                         {
                             case 't':
-                                Console.WriteLine("\n\nEncrypt Text");
+                                string eingabe = ReadText();
+                                Console.WriteLine("\n\n"+MD5.hash(eingabe));
+                                Console.WriteLine(MD5DotNet(eingabe));
                                 break;
                             case 'f':
-                                Console.WriteLine("\n\nEncrypt File");
+                                Console.WriteLine("\n\nCOMING SOON");
                                 break;
                         }
                         break;
@@ -93,7 +93,7 @@ namespace MD5
             do
             {
                 syntax = false;
-                Console.WriteLine("PLEASE WRITE YOUR TEXT");
+                Console.WriteLine("\n\nPLEASE WRITE YOUR TEXT");
                 try
                 {
                     text = ReadLine();
@@ -103,7 +103,7 @@ namespace MD5
                 {
                 }
                 if (text == "") syntax = false;
-            } while (syntax);
+            } while (!syntax);
             return text;
         }
 
@@ -133,6 +133,34 @@ namespace MD5
                 }
             }
             return sb.ToString();
+        }
+        private static string MD5DotNet(string input)
+
+        {
+
+            // step 1, calculate MD5 hash from input
+
+            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
+
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+
+            // step 2, convert byte array to hex string
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+
+            {
+
+                sb.Append(hash[i].ToString("X2"));
+
+            }
+
+            return sb.ToString();
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Runtime.Remoting.Messaging;
@@ -15,8 +16,6 @@ namespace MD5
         const UInt32 b0 = 0xEFCDAB89;
         const UInt32 c0 = 0x98BADCFE;
         const UInt32 d0 = 0x10325476;
-
-        static UInt32[] M = new UInt32[16];
 
         static UInt32[] K = {0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
                              0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -35,16 +34,93 @@ namespace MD5
                              0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
                              0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
 
-        static UInt32[] s = {7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
+        static int[] s = {7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
                              5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,
                              4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,
                              6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21};
 
         static public string hash(string message) //Implementierung mit einem BitArray
         {
-            BitArray[][] test = Preparation(message);
+            BitArray[][] messagePreparated = Preparation(message);
 
-            return "";
+            UInt32 A0 = a0;
+            UInt32 B0 = b0;
+            UInt32 C0 = c0;
+            UInt32 D0 = d0;
+
+            for (int i = 0; i < messagePreparated.Length; i++) //Für jeden 512Bit Block
+            {
+                for (int k = 0; k < 4; k++) //4 Runden
+                {
+                    for (int m = 0; m < 16; m++) //ganzer nachrichtenblock
+                    {
+                        //------Backups erstellen-------
+                        UInt32 BackupA0 = A0;
+                        UInt32 BackupB0 = B0;
+                        UInt32 BackupC0 = C0;
+                        UInt32 BackupD0 = D0;
+                        //-----Verschiebungsoperationen------
+                        A0 = BackupD0; //D wird so A
+                        D0 = BackupC0; //C wird zu D
+                        C0 = BackupB0; //B wird zu C
+                                       //---MD5 Operation für A wird zu B----
+                        switch (k)
+                        {
+                            case 0:
+                                //f1
+                                B0 = (uint)(rotate(((uint)((uint)(((uint)(BackupA0 + f1(BackupB0, BackupC0, BackupD0)))+get_part_message(messagePreparated, i, m)) + K[m])), s[m]) + BackupB0);
+                                break;
+                            case 1:
+                                //f2
+                                B0 = (uint)(rotate(((uint)((uint)(((uint)(BackupA0 + f2(BackupB0, BackupC0, BackupD0))) + get_part_message(messagePreparated, i, m)) + K[m+16])), s[m+16]) + BackupB0);
+                                break;
+                            case 2:
+                                //f3
+                                B0 = (uint)(rotate(((uint)((uint)(((uint)(BackupA0 + f3(BackupB0, BackupC0, BackupD0))) + get_part_message(messagePreparated, i, m)) + K[m+32])), s[m+32]) + BackupB0);
+                                break;
+                            case 3:
+                                //f4
+                                B0 = (uint)(rotate(((uint)((uint)(((uint)(BackupA0 + f4(BackupB0, BackupC0, BackupD0))) + get_part_message(messagePreparated, i, m)) + K[m+48])), s[m+48]) + BackupB0);
+                                break;
+                        }
+                    }
+                }               
+            }
+            string hash = A0.ToString("X2") + B0.ToString("X2") + C0.ToString("X2") + D0.ToString("X2");
+            return hash;
+        }
+
+        private static UInt32 rotate(UInt32 block, int value)
+        {
+            BitArray rotates = new BitArray(32);
+            BitArray new_block = new BitArray(BitConverter.GetBytes(block));
+
+            for (int i = 0; i < value; i++)
+            {
+                rotates[i] = new_block[i];
+            }
+
+            for (int i = value; i < 32; i++)
+            {
+                new_block[i - value] = new_block[value];
+            }
+
+            for (int i = 32 - value, j = 0; i < 32; i++, j++)
+            {
+                new_block[i] = rotates[j];
+            }
+
+            byte[] return_value = new byte[new_block.Length / 8];
+            new_block.CopyTo(return_value, 0);
+            return BitConverter.ToUInt32(return_value,0);
+        }
+
+        static private UInt32 get_part_message(BitArray[][] message, int index_1, int index_2)
+        {
+            byte[] new_message = new byte[message[index_1][index_2].Length / 8];
+            
+            message[index_1][index_2].CopyTo(new_message,0);
+            return BitConverter.ToUInt32(new_message,0);
         }
 
         //Die 'F' Methoden
@@ -102,19 +178,8 @@ namespace MD5
             }
 
             //---------Die Länge der ursprünglichen Nachricht anhängen (die hinteren '0' werden überschrieben)---------------
-            UInt64 backupLengthInt = (ulong)backup.Length;
+            UInt64 backupLengthInt = (ulong)backup.Length - 1; //Die Angehängte 1 wurde schon mitgezähle
             byte[] backupLengthByte = BitConverter.GetBytes(backupLengthInt);
-            int counter = 0;
-            for (int i = backupLengthByte.Length - 1; i >= 0; i--) //'0' die wegen dem BitConverter entstehen löschen
-            {
-                if (backupLengthByte[i] == 0) counter++;
-            }
-            byte[] backupLengthBytesBackup = backupLengthByte;
-            backupLengthByte = new byte[backupLengthBytesBackup.Length - counter];
-            for (int i = 0; i < backupLengthByte.Length; i++)
-            {
-                backupLengthByte[i] = backupLengthBytesBackup[i];
-            }
             BitArray backupLength = new BitArray(backupLengthByte);
             if (backupLength.Length <= 64) //Die Länge der Nachricht darf in Bitform max 64Stellen haben
             {
